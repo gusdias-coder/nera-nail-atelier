@@ -1,29 +1,30 @@
-# NÉRA Nail Atelier
+# Aliane Nail Designer
 
-Site demonstrativo para estúdios de unhas. Reúne serviços, inspirações e um funil de pré-agendamento que prepara uma mensagem para o WhatsApp.
+Site com direção editorial, galeria de inspirações, contatos e funil de pré-agendamento.
 
-## Abrir o projeto
+## Publicação
 
-Abra `index.html` no navegador ou publique esta pasta em um serviço de páginas estáticas, como o GitHub Pages. Não há instalação nem banco de dados.
+https://gusdias-coder.github.io/nera-nail-atelier/
 
-## Configurar para um salão
+## Contatos configurados
 
-1. Em `app.js`, altere `CONFIG.salonName` e `CONFIG.salonWhatsApp`. O número deve conter DDI, DDD e telefone, somente dígitos. Exemplo de formato: `5511999999999` (número fictício). Quando o campo está vazio, o WhatsApp abre com a mensagem pronta, mas sem destinatário.
-2. Troque nome, descrição, serviços e perguntas no `index.html`.
-3. Substitua as imagens em `assets/` por fotos autorizadas do salão e revise os textos alternativos.
-4. Atualize cores e fontes no início de `styles.css`.
-5. Confira o fluxo de agendamento em celular e computador antes de publicar.
+- Instagram: @aliane_nail_designer
+- WhatsApp: +55 47 98468-9177
+- Cidade: Rio Negro, PR
+- Endereço completo: pendente. Maps e Waze fazem uma busca pelo nome e cidade, sem indicar um ponto confirmado.
 
-O formulário não envia nem salva dados. O horário e o valor precisam ser confirmados diretamente pelo salão.
+Os contatos foram transcritos da imagem fornecida pelo usuário. O formulário prepara uma mensagem; a reserva é confirmada pela profissional.
 
-## Estrutura
+## Arquivos
 
-- `index.html`: conteúdo da página e formulário.
-- `styles.css`: identidade visual, animações e layout responsivo.
-- `app.js`: navegação, validação e mensagem de WhatsApp.
-- `assets/`: imagens ilustrativas e ícone.
-- `PLANEJAMENTO.md`: público, jornada, funil e critérios de aceite.
+- index.html: conteúdo, imagens, contatos e formulário.
+- styles.css: estilos base.
+- editorial.css: direção visual atual e versão móvel.
+- app.js: etapas, validação e mensagem para o WhatsApp.
+- assets/: fotografias de inspiração e ícones vetoriais.
 
-## Créditos
+Para trocar contatos, atualize os links no HTML e o objeto CONFIG em app.js. Para configurar a localização exata, use endereço completo ou links confirmados do estabelecimento.
 
-Marca fictícia e fotografias ilustrativas criadas para este projeto. Este modelo não representa um salão real.
+## Imagens
+
+As fotografias foram geradas para a apresentação visual e não documentam trabalhos ou instalações reais da profissional. Substitua por fotografias autorizadas antes de apresentar o site como portfólio real.
