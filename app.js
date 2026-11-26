@@ -131,19 +131,57 @@ form.addEventListener("submit", (event) => {
 backButton.addEventListener("click", () => showStep(Math.max(0, state.step - 1)));
 
 const menuToggle = $(".menu-toggle");
-const mobileMenu = $("#mobile-menu");
-function closeMenu() {
-  mobileMenu.hidden = true;
+const drawer = $("#mobile-menu");
+let drawerCloseTimer;
+function finishClose() {
+  drawer.close();
+  drawer.classList.remove("is-closing");
+  document.body.classList.remove("drawer-open");
   menuToggle.setAttribute("aria-expanded", "false");
-  menuToggle.setAttribute("aria-label", "Abrir menu");
+}
+function closeMenu() {
+  if (!drawer.open || drawer.classList.contains("is-closing")) return;
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) { finishClose(); return; }
+  drawer.classList.add("is-closing");
+  drawerCloseTimer = setTimeout(finishClose, 260);
 }
 menuToggle.addEventListener("click", () => {
-  const open = mobileMenu.hidden;
-  mobileMenu.hidden = !open;
-  menuToggle.setAttribute("aria-expanded", String(open));
-  menuToggle.setAttribute("aria-label", open ? "Fechar menu" : "Abrir menu");
+  clearTimeout(drawerCloseTimer);
+  drawer.classList.remove("is-closing");
+  drawer.showModal();
+  document.body.classList.add("drawer-open");
+  menuToggle.setAttribute("aria-expanded", "true");
 });
-mobileMenu.querySelectorAll("a").forEach((link) => link.addEventListener("click", closeMenu));
+$(".drawer-close").addEventListener("click", closeMenu);
+drawer.addEventListener("keydown", event => {
+  if (event.key !== "Tab") return;
+  const controls = [...drawer.querySelectorAll("a[href], button:not([disabled])")];
+  const first = controls[0], last = controls[controls.length - 1];
+  if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+  else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+});
+drawer.addEventListener("cancel", event => { event.preventDefault(); closeMenu(); });
+drawer.addEventListener("click", event => {
+  const bounds = drawer.getBoundingClientRect();
+  if (event.target === drawer && (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom)) closeMenu();
+});
+drawer.querySelectorAll("a").forEach(link => link.addEventListener("click", closeMenu));
+matchMedia("(min-width: 761px)").addEventListener("change", event => {
+  if (event.matches && drawer.open) { clearTimeout(drawerCloseTimer); finishClose(); }
+});
+const sectionLinks = [...document.querySelectorAll(".desktop-nav a, .drawer-nav a")];
+if ("IntersectionObserver" in window) {
+  const sectionObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      sectionLinks.forEach(link => {
+        if (link.hash === "#" + entry.target.id) link.setAttribute("aria-current", "location");
+        else link.removeAttribute("aria-current");
+      });
+    });
+  }, { rootMargin: "-20% 0px -55% 0px", threshold: 0 });
+  ["experiencia", "servicos", "inspiracoes", "contato"].forEach(id => sectionObserver.observe(document.getElementById(id)));
+}
 
 const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 if (reducedMotion || !("IntersectionObserver" in window)) {
