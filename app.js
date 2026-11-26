@@ -39,7 +39,7 @@ function showStep(index, focus = true) {
   $("#progress-fill").style.width = `${(index + 1) * 25}%`;
   backButton.hidden = index === 0;
   const hasSalonNumber = Boolean(CONFIG.salonWhatsApp.replace(/\D/g, ""));
-  nextButton.innerHTML = index === 3 ? `${hasSalonNumber ? "Abrir WhatsApp" : "Compartilhar no WhatsApp"} <span aria-hidden="true">↗</span>` : 'Continuar <span aria-hidden="true">↗</span>';
+  nextButton.innerHTML = index === 3 ? `${hasSalonNumber ? "Abrir WhatsApp" : "Compartilhar no WhatsApp"} <span aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 18 18 6M6 6h12v12"/></svg></span>` : 'Continuar <span aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 18 18 6M6 6h12v12"/></svg></span>';
   $("#share-notice").hidden = hasSalonNumber || index !== 3;
   clearError();
   if (index === 3) fillReview();
