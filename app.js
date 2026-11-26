@@ -24,6 +24,84 @@ dateInput.min = localDate(today);
 const limit = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 90);
 dateInput.max = localDate(limit);
 
+
+// Calendário de preferências: não representa disponibilidade da agenda.
+const calendarDays = $("#calendar-days");
+const calendarPrev = $("#calendar-prev");
+const calendarNext = $("#calendar-next");
+let calendarMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+const minimumDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+let keyboardDate = localDate(minimumDate);
+const fullDateLabel = new Intl.DateTimeFormat("pt-BR", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+function calendarAllowed(date) { const value = localDate(date); return value >= dateInput.min && value <= dateInput.max; }
+function renderCalendar(focusDay = false) {
+  const year = calendarMonth.getFullYear(), month = calendarMonth.getMonth();
+  const label = new Intl.DateTimeFormat("pt-BR", { month: "long" }).format(calendarMonth);
+  $("#calendar-month").textContent = label.charAt(0).toUpperCase() + label.slice(1);
+  $("#calendar-year").textContent = year;
+  calendarPrev.disabled = year === minimumDate.getFullYear() && month === minimumDate.getMonth();
+  calendarNext.disabled = year === limit.getFullYear() && month === limit.getMonth();
+  calendarDays.replaceChildren();
+  const offset = new Date(year, month, 1).getDay();
+  for (let i = 0; i < offset; i++) { const blank = document.createElement("span"); blank.setAttribute("aria-hidden", "true"); calendarDays.append(blank); }
+  const count = new Date(year, month + 1, 0).getDate();
+  const validDays = [];
+  for (let day = 1; day <= count; day++) {
+    const date = new Date(year, month, day), value = localDate(date);
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "calendar-day";
+    button.dataset.date = value;
+    button.textContent = day;
+    button.disabled = !calendarAllowed(date);
+    button.setAttribute("aria-label", fullDateLabel.format(date) + (value === dateInput.min ? ", hoje" : ""));
+    button.setAttribute("aria-pressed", String(dateInput.value === value));
+    if (value === dateInput.min) button.setAttribute("aria-current", "date");
+    button.tabIndex = -1;
+    if (!button.disabled) validDays.push(button);
+    calendarDays.append(button);
+  }
+  const active = validDays.find(button => button.dataset.date === keyboardDate) || validDays.find(button => button.dataset.date === dateInput.value) || validDays[0];
+  if (active) { active.tabIndex = 0; keyboardDate = active.dataset.date; if (focusDay) active.focus({ preventScroll: true }); }
+}
+function moveCalendar(monthChange) {
+  const candidate = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth() + monthChange, 1);
+  if (candidate < new Date(minimumDate.getFullYear(), minimumDate.getMonth(), 1) || candidate > new Date(limit.getFullYear(), limit.getMonth(), 1)) return;
+  calendarMonth = candidate;
+  renderCalendar();
+}
+calendarPrev.addEventListener("click", () => moveCalendar(-1));
+calendarNext.addEventListener("click", () => moveCalendar(1));
+$("#calendar-today").addEventListener("click", () => { calendarMonth = new Date(minimumDate.getFullYear(), minimumDate.getMonth(), 1); keyboardDate = dateInput.min; renderCalendar(true); });
+calendarDays.addEventListener("click", event => {
+  const button = event.target.closest("button[data-date]");
+  if (!button || button.disabled) return;
+  dateInput.value = button.dataset.date;
+  state.date = dateInput.value;
+  keyboardDate = dateInput.value;
+  calendarDays.querySelectorAll("button").forEach(day => { day.setAttribute("aria-pressed", String(day === button)); day.tabIndex = day === button ? 0 : -1; });
+  $("#calendar-selection").textContent = new Intl.DateTimeFormat("pt-BR", { day: "numeric", month: "long" }).format(new Date(dateInput.value + "T12:00:00")) + " · sua data escolhida";
+  $(".calendar-selection").classList.add("has-date");
+  clearError();
+});
+calendarDays.addEventListener("keydown", event => {
+  const button = event.target.closest("button[data-date]");
+  if (!button) return;
+  const date = new Date(button.dataset.date + "T12:00:00");
+  const moves = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -7, ArrowDown: 7, Home: -date.getDay(), End: 6 - date.getDay() };
+  if (!(event.key in moves) && event.key !== "PageUp" && event.key !== "PageDown") return;
+  event.preventDefault();
+  if (event.key === "PageUp" || event.key === "PageDown") {
+    const currentDay = date.getDate(); date.setDate(1); date.setMonth(date.getMonth() + (event.key === "PageUp" ? -1 : 1)); date.setDate(Math.min(currentDay, new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()));
+  } else date.setDate(date.getDate() + moves[event.key]);
+  if (date < minimumDate) date.setTime(minimumDate.getTime());
+  if (date > limit) date.setTime(limit.getTime());
+  keyboardDate = localDate(date);
+  calendarMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+  renderCalendar(true);
+});
+renderCalendar();
+
 function showError(message) {
   error.textContent = message;
   error.hidden = false;
@@ -80,7 +158,7 @@ function validateStep() {
   readFields();
   if (state.step === 0 && !state.service) { showError("Escolha um serviço para continuar."); return false; }
   if (state.step === 1) {
-    if (!state.date) { showError("Escolha uma data de preferência."); dateInput.focus(); return false; }
+    if (!state.date) { showError("Escolha uma data de preferência."); calendarDays.querySelector('button[tabindex="0"]')?.focus(); return false; }
     if (state.date < dateInput.min || state.date > dateInput.max) { showError("Escolha uma data dentro dos próximos 90 dias."); dateInput.focus(); return false; }
     if (!state.time) { showError("Escolha um período ou marque ‘A combinar’."); return false; }
   }
