@@ -30,3 +30,23 @@ img[src*="whatsapp-brand"]{width:22px;height:22px;object-fit:contain;flex-shrink
 
 /* Altura da foto deve acompanhar o conteúdo em todos os breakpoints. */
 .editorial .editorial-image{height:auto;min-height:0;align-self:start}.editorial .editorial-image img{height:auto;aspect-ratio:4 / 5;object-fit:cover}.editorial .picture-label{position:static;display:block;height:auto;line-height:1.6;margin:0;padding:14px 0 0}.editorial .editorial-copy{min-width:0}.menu-toggle{color:var(--wine);appearance:none;-webkit-appearance:none;-webkit-tap-highlight-color:transparent}.menu-toggle .menu-label{color:inherit}@media(max-width:760px){.editorial .editorial-grid{display:flex;flex-direction:column;align-items:stretch;gap:0}.editorial .editorial-image{width:100%;flex:none}.editorial .editorial-copy{position:static;padding:36px 0 0;margin:0}.editorial .editorial-copy h2{margin-bottom:24px}.editorial .eyebrow{margin-bottom:22px}}
+
+/* Movimento discreto, sem alterar a posição do conteúdo durante a leitura. */
+:root{--ease-soft:cubic-bezier(.22,1,.36,1)}
+.reveal{transform:translateY(14px);transition:opacity .65s ease,transform .65s var(--ease-soft)}
+.reveal.is-visible{transform:none}
+.service-card:nth-child(2){transition-delay:40ms}.service-card:nth-child(3){transition-delay:80ms}.service-card:nth-child(4){transition-delay:120ms}.gallery-grid figure:nth-child(2){transition-delay:90ms}
+.form-step:not([hidden]){animation:step-arrive .3s var(--ease-soft) both}
+.choice,.time-choice{transition:background .2s ease,border-color .2s ease,box-shadow .2s ease,transform .2s var(--ease-soft)}
+.choice-check{transition:opacity .2s ease,transform .25s var(--ease-soft);transform:scale(.8)}.choice[aria-pressed=true] .choice-check{transform:scale(1)}
+.choice[aria-pressed=true],.time-choice[aria-pressed=true]{box-shadow:inset 0 0 0 1px var(--wine)}
+.button,.quick-contact a,.route-links a,.menu-toggle,.card-link{transition:background .22s ease,color .22s ease,transform .22s var(--ease-soft),box-shadow .22s ease}
+.button:active,.quick-contact a:active,.menu-toggle:active,.card-link:active{transform:scale(.975)}
+input,textarea{transition:border-color .2s ease,box-shadow .2s ease}input:focus,textarea:focus{box-shadow:0 0 0 3px #303a320d}
+.faq details[open] p{animation:answer-arrive .28s ease both}
+.editorial-image img,.gallery-grid img{transition:filter .5s ease}
+@media(hover:hover) and (pointer:fine){.editorial-image img:hover,.gallery-grid img:hover{filter:brightness(1.035)}.quick-contact a:hover{transform:translateY(-2px)}.route-links a:hover{background:#e7eadf}.contact-channels a:hover .ui-icon{transform:translate(2px,-2px)}}
+.contact-channels .ui-icon{transition:transform .25s var(--ease-soft)}
+@keyframes step-arrive{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+@keyframes answer-arrive{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none!important}.form-step:not([hidden]),.faq details[open] p{animation:none!important}.button,.quick-contact a,.route-links a,.menu-toggle,.card-link,.choice,.time-choice,.choice-check,input,textarea,.editorial-image img,.gallery-grid img,.contact-channels .ui-icon{transition:none!important;transform:none!important}}
