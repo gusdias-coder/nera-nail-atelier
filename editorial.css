@@ -25,3 +25,5 @@
 :root{--muted:#5e645a}.gallery-grid img{height:auto}.hero-visual img{animation:none}.wordmark span{white-space:nowrap}
 
 .ui-icon{display:inline-block;width:20px;height:20px;flex:none;vertical-align:middle;stroke:currentColor}.button>span,.text-link>span,.card-link>span{display:inline-flex;align-items:center;justify-content:center}.route-links a{justify-content:space-between;gap:12px}.contact-channels a>span:last-child{display:inline-flex}.faq summary span{display:flex;align-items:center}.choice-check .ui-icon{width:17px;height:17px}.back-button>span{display:inline-flex;vertical-align:middle}.studio-image span .ui-icon{width:16px;height:16px}
+
+img[src*="whatsapp-brand"]{width:22px;height:22px;object-fit:contain;flex-shrink:0}.quick-contact img[src*="whatsapp-brand"]{width:23px;height:23px}.drawer-socials img[src*="whatsapp-brand"]{width:20px;height:20px}
