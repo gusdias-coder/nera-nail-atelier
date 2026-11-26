@@ -126,8 +126,7 @@ form.addEventListener("submit", (event) => {
   }
   const number = CONFIG.salonWhatsApp.replace(/\D/g, "");
   const url = `https://wa.me/${number}?text=${encodeURIComponent(bookingMessage())}`;
-  const opened = window.open(url, "_blank", "noopener,noreferrer");
-  if (!opened) window.location.href = url;
+  window.location.assign(url);
 });
 backButton.addEventListener("click", () => showStep(Math.max(0, state.step - 1)));
 
