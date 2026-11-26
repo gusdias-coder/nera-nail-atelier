@@ -1,6 +1,6 @@
 /* Personalize aqui o número do salão: DDI + DDD + número, somente dígitos.
    Exemplo fictício: "5511999999999". Vazio = demonstração sem destinatário. */
-const CONFIG = { salonName: "NÉRA Nail Atelier", salonWhatsApp: "" };
+const CONFIG = { salonName: "Aliane Nail Designer", salonWhatsApp: "5547984689177", instagramUrl: "https://www.instagram.com/aliane_nail_designer/", address: "Aliane Nail Designer, Rio Negro - PR" };
 
 const $ = (selector) => document.querySelector(selector);
 const steps = [...document.querySelectorAll(".form-step")];
@@ -156,3 +156,24 @@ if (reducedMotion || !("IntersectionObserver" in window)) {
   }, { threshold: 0.12, rootMargin: "0px 0px 60px 0px" });
   document.querySelectorAll(".reveal").forEach((element) => observer.observe(element));
 }
+
+// Os destinos são definidos com os dados reais do atelier.
+
+let contactTimer;
+document.querySelectorAll("[data-contact]").forEach(button => button.addEventListener("click", () => {
+  const channel = button.dataset.contact;
+  const number = CONFIG.salonWhatsApp.replace(/\D/g, "");
+  const address = encodeURIComponent(CONFIG.address);
+  const destinations = {
+    whatsapp: number ? "https://wa.me/" + number : "",
+    instagram: CONFIG.instagramUrl,
+    maps: CONFIG.address ? "https://www.google.com/maps/search/?api=1&query=" + address : "",
+    waze: CONFIG.address ? "https://www.waze.com/ul?q=" + address + "&navigate=yes" : ""
+  };
+  if (destinations[channel]) { window.location.assign(destinations[channel]); return; }
+  const status = $("#contact-status");
+  status.textContent = channel === "instagram" ? "O perfil do Instagram ainda não foi informado." : channel === "whatsapp" ? "O WhatsApp do atelier ainda não foi informado. Você pode preparar seu pedido no agendamento." : "O endereço do atelier ainda não foi informado.";
+  status.hidden = false;
+  clearTimeout(contactTimer);
+  contactTimer = setTimeout(() => { status.hidden = true; }, 6000);
+}));
