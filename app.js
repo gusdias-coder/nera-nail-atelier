@@ -143,7 +143,7 @@ function closeMenu() {
   if (!drawer.open || drawer.classList.contains("is-closing")) return;
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) { finishClose(); return; }
   drawer.classList.add("is-closing");
-  drawerCloseTimer = setTimeout(finishClose, 260);
+  drawerCloseTimer = setTimeout(finishClose, 360);
 }
 menuToggle.addEventListener("click", () => {
   clearTimeout(drawerCloseTimer);

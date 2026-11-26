@@ -50,3 +50,14 @@ input,textarea{transition:border-color .2s ease,box-shadow .2s ease}input:focus,
 @keyframes step-arrive{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
 @keyframes answer-arrive{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none!important}.form-step:not([hidden]),.faq details[open] p{animation:none!important}.button,.quick-contact a,.route-links a,.menu-toggle,.card-link,.choice,.time-choice,.choice-check,input,textarea,.editorial-image img,.gallery-grid img,.contact-channels .ui-icon{transition:none!important;transform:none!important}}
+
+/* Ritmo editorial: entradas mais longas e sequências delicadas. */
+.reveal{transform:translateY(22px);transition-duration:1.05s;transition-timing-function:cubic-bezier(.16,1,.3,1)}.reveal.is-visible{transform:none}
+.service-card:nth-child(2){transition-delay:90ms}.service-card:nth-child(3){transition-delay:180ms}.service-card:nth-child(4){transition-delay:270ms}.gallery-grid figure:nth-child(2){transition-delay:180ms}
+.hero .hero-visual img{animation:hero-drift 2.8s cubic-bezier(.2,.7,.3,1) both}
+.hero-copy-inner>.eyebrow{animation:hero-copy-in 1.05s var(--ease-soft) .08s both}.hero h1{animation:hero-copy-in 1.2s var(--ease-soft) .18s both}.hero-lede{animation:hero-copy-in 1.1s var(--ease-soft) .32s both}.hero-actions{animation:hero-copy-in 1.1s var(--ease-soft) .46s both}
+.form-step:not([hidden]){animation-duration:.5s}.faq details[open] p{animation-duration:.45s}
+.nav-drawer[open]{animation-duration:.6s}.nav-drawer::backdrop{animation-duration:.45s}.nav-drawer.is-closing,.nav-drawer.is-closing::backdrop{animation-duration:.36s}
+.nav-drawer[open]:not(.is-closing) .drawer-nav a{animation:menu-item-in .55s var(--ease-soft) both}.drawer-nav a:nth-child(1){animation-delay:.08s!important}.drawer-nav a:nth-child(2){animation-delay:.14s!important}.drawer-nav a:nth-child(3){animation-delay:.2s!important}.drawer-nav a:nth-child(4){animation-delay:.26s!important}
+@keyframes hero-copy-in{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}@keyframes hero-drift{from{transform:scale(1.045)}to{transform:scale(1)}}@keyframes menu-item-in{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.hero .hero-visual img,.hero-copy-inner>.eyebrow,.hero h1,.hero-lede,.hero-actions,.nav-drawer[open] .drawer-nav a{animation:none!important;transform:none!important}.reveal{transform:none;transition:none!important}}
